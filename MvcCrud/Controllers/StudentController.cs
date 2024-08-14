@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.ModelBinding;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace MvcCrud.Controllers
@@ -27,10 +25,10 @@ namespace MvcCrud.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateNewStudent(Student student) 
+        public async Task<ActionResult> CreateNewStudent(Student student) 
         { 
             _dbContext.Students.Add(student);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -49,6 +47,21 @@ namespace MvcCrud.Controllers
         {
             Student student = _dbContext.Students.Find(studentId);
             return View(student);
+        }
+
+        [HttpPost]
+        [Route("/{studentId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditStudent(int studentId, Student updatedStudent)
+        {
+            Student student = _dbContext.Students.Find(studentId);
+            student.Name = updatedStudent.Name;
+            student.City = updatedStudent.City;
+            student.Address = updatedStudent.Address;
+            student.Fees = updatedStudent.Fees;
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
     }
 }

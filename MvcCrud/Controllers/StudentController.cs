@@ -63,5 +63,15 @@ namespace MvcCrud.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteStudent(int studentId)
+        {
+            Student student = _dbContext.Students.Find(studentId);
+            _dbContext.Students.Remove(student);
+            await _dbContext.SaveChangesAsync();
+
+            return Json(new { IsSuccess = true });
+        }
     }
 }

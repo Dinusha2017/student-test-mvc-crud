@@ -4,6 +4,8 @@
     ViewBag.Title = "Student List";
 }
 
+<script src="~/Scripts/App/Student.js" type="text/javascript"></script>
+
 <h2>Student List</h2>
 
 @Html.ActionLink(" ", "Create", null, new { @class = "btn btn-primary fa fa-plus" })
@@ -11,6 +13,9 @@
 <table class="table">
     <tr>
         <th>Actions</th>
+        <th>
+            Student ID
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -37,9 +42,13 @@
                     <i class="fa fa-eye"></i>
                 </a>
                 |
-                <a class="btn btn-danger" href="@Url.Action("Delete", "Student", new { studentId = item.StudentId })">
+                <button type="button" class="btn btn-danger deleteStudentLink"
+                        data-studentId="@item.StudentId" data-bs-toggle="modal" data-bs-target="#deleteStudentModal">
                     <i class="fa fa-trash"></i>
-                </a>
+                </button>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -57,3 +66,25 @@
     }
 
 </table>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteStudentTitle">Delete Student</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Student with ID: <span id="deleteStudentId"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" onclick="deleteStudent()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
